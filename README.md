@@ -110,6 +110,60 @@ module.exports = {
 
 ### 2.5 封装项目api接口
 
+#### 2.5.1 封装axios请求的配置
+
+1. 在src目录下创建utils文件夹
+2. 在utils文件夹内创建request.js
+3. 在request.js文件内引入axios
+4. 在request.js文件内创建axios实例
+5. 在request.js文件内创建请求拦截与响应拦截
+6. 在request.js文件内导出axios实例
+
+> 具体内容请参考一下代码
+
+```
+//引入axios
+import axios from 'axios'
+
+//创建axios实例
+const request = axios.create({
+    //配置请求的公共地址
+    baseUrl: "",
+    //配置请求的超时时间
+    timeout: 5 * 1000
+    //还可以配置更多内容,请查看axios中文文档
+})
+
+
+// 添加请求拦截器
+axios.interceptors.request.use(function (config) {
+
+    // 在发送请求之前做些什么
+    return config;
+}, function (error) {
+    // 对请求错误做些什么
+    return Promise.reject(error);
+});
+
+// 添加响应拦截器
+axios.interceptors.response.use(function (response) {
+    // 对响应数据做点什么
+    return response;
+}, function (error) {
+    // 对响应错误做点什么
+    return Promise.reject(error);
+});
+
+//导出axios实例对象
+export default request
+```
+
+
+
+#### 2.5.2 封装api接口
+
+
+
 ### 2.6 配置跨域
 
 ### 2.7 配置路由
