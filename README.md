@@ -81,6 +81,34 @@ module.exports = {
 
 ### 2.4 安装element-ui与axios以及项目所需要的一些插件
 
+1. 安装element-ui与axios
+
+   ```
+   cnpm install axios element-ui --save
+   ```
+
+2. 使用element-ui
+
+   ```
+   import ElementUI from 'element-ui';
+   import 'element-ui/lib/theme-chalk/index.css';
+   
+   Vue.use(ElementUI);
+   ```
+
+3. 测试elemen-ui是否引入成功
+
+   ```
+   <el-breadcrumb separator="/">
+         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+         <el-breadcrumb-item><a href="/">活动管理</a></el-breadcrumb-item>
+         <el-breadcrumb-item>活动列表</el-breadcrumb-item>
+         <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+    </el-breadcrumb>
+   ```
+
+   
+
 ### 2.5 封装项目api接口
 
 ### 2.6 配置跨域
