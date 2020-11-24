@@ -1,10 +1,11 @@
 //引入axios
 import axios from 'axios'
 
+console.log(process.env.VUE_APP_BASE_API)
 //创建axios实例
 const request = axios.create({
     //配置请求的公共地址
-    baseUrl: "",
+    baseURL: process.env.VUE_APP_BASE_API,
     //配置请求的超时时间
     timeout: 5 * 1000
     //还可以配置更多内容,请查看axios中文文档

@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import {getCategoryList} from "../api/category"
 // @ is an alias to /src
 import HelloWorld from "@/components/HelloWorld.vue";
 
@@ -19,6 +20,11 @@ export default {
   name: "Home",
   components: {
     HelloWorld,
+  },
+  created() {
+    getCategoryList(1,20).then(res=>{
+      console.log(res)
+    })
   },
 };
 </script>
