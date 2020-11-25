@@ -6,7 +6,7 @@ export function getCategoryList(query,current = 1,size =20){
     return request({
         url : "/article/category/search",
         method : "POST",
-        data : {
+        data : {  
             ...query,
             current,
             size
