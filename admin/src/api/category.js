@@ -2,13 +2,12 @@
 import request from '../utils/request'
 
 //获取分类管理分页接口
-export function getCategoryList(name,status,current = 1,size = 10){
+export function getCategoryList(query,current = 1,size =20){
     return request({
         url : "/article/category/search",
         method : "POST",
         data : {
-            name,
-            status,
+            ...query,
             current,
             size
         }
