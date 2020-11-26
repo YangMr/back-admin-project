@@ -46,3 +46,11 @@ export function updateCategoryData(){
         method : 'PUT'
     })
 }
+
+//查询所有正常状态的分类接口
+export function geNormalCategory(){
+    return request({
+        url : "/article/category/list",
+        method : 'GET'
+    })
+}
