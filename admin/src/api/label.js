@@ -2,7 +2,7 @@
 import request from "../utils/request"
 
 //标签列表分页接口
-export function getLabelList(query,current,size){
+export function getLabelList(query,current = 1,size = 20){
     return request({
         url : "/article/label/search",
         method : "POST",
