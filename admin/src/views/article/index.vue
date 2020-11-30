@@ -51,7 +51,7 @@
       </el-table-column>
       <el-table-column align="left" label="操作" width="220"> 
           <template slot-scope="scope">
-              <el-button size="mini" type="primary" @click="handleView(scope.row.id)">查看</el-button>
+              <el-button size="mini" type="primary" @click="handleView(scope.row.id)" >查看</el-button>
               <el-button size="mini" v-if="scope.row.status == 1" type="success" @click="openAudit(scope.row.id)">审核</el-button>
               <el-button size="mini" v-if="scope.row.status !== 0" type="danger">删除</el-button>
           </template>
@@ -70,14 +70,14 @@
     </el-pagination>
 
     <!-- 查看详情组件 -->
-    <app-audit :visible="audit.visible" :title="audit.title" :id="audit.id" :remoteFunction="close"></app-audit>
+    <app-audit :visible="audit.visible" :displayAudit="audit.displayAudit" :title="audit.title" :id="audit.id" :remoteFunction="close"></app-audit>
   </div>
 </template>
 
 <script>
 import AppAudit from "../../components/article/audit"
 import {format} from "../../utils/date"
-import { getArticleList } from "../../api/article";
+import { getArticleList ,} from "../../api/article";
 export default {
   name: "",
   data() {
@@ -92,7 +92,8 @@ export default {
       audit : {
           visible : false,
           id : null,
-          title : ""
+          title : "",
+          displayAudit : null
       }
     };
   },
@@ -126,7 +127,10 @@ export default {
 
     //查看按钮方法
     handleView(id){
-        console.log(id)
+        this.audit.visible = true;
+        this.audit.title = "查看";
+        this.audit.id = id;
+        this.audit.displayAudit = false;
     },
 
     //页码发生变化触发的方法
@@ -157,6 +161,7 @@ export default {
         this.audit.visible = true;
         this.audit.title ="审核文章";
         this.audit.id = id;
+        this.audit.displayAudit = true;
     },
 
     //关闭提示框的方法

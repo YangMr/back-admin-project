@@ -45,3 +45,11 @@ export function articleFail(id){
         method : 'GET'
     })
 }
+
+//获取所有正常状态的分类和标签
+export function getCategoryLabel(){
+    return request({
+        url : "/article/category/label/list",
+        method : "GET"
+    })
+}

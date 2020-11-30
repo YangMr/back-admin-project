@@ -10,7 +10,8 @@
         <el-input v-model="formData.title" readonly></el-input>
       </el-form-item>
       <el-form-item label="标签:">
-        <el-cascader disabled clearable></el-cascader>
+        <el-cascader disabled v-model="formData.labelIds" :props="{ multiple: true, emitPath: false, children: 'labelList', value: 'id', 
+label: 'name'}" clearable style="display:block" :options="optionData"></el-cascader>
       </el-form-item>
       <el-form-item label="主图:">
         <img :src="formData.imageUrl" class="avatar" />
@@ -35,7 +36,7 @@
         ></mavon-editor>
       </el-form-item>
 
-      <el-form-item align="center">
+      <el-form-item align="center" v-if="displayAudit">
         <el-button type="primary" @click="auditSuccess">审核通过</el-button>
         <el-button type="danger" @click="auditFail">审核不通过</el-button>
       </el-form-item>
@@ -44,12 +45,14 @@
 </template>
 
 <script>
+
 import { mavonEditor } from "mavon-editor";
 import "mavon-editor/dist/css/index.css";
 import {
   findArticleData,
   articleSuccess,
   articleFail,
+  getCategoryLabel
 } from "../../api/article";
 export default {
   props: {
@@ -62,18 +65,21 @@ export default {
       type: String,
       default: "",
     },
+    displayAudit : Boolean,
     remoteFunction: Function,
   },
   name: "",
   data() {
     return {
       formData: {},
+      optionData : null
     };
   },
   watch: {
     visible(val) {
       if (val) {
         this.getFindArticleData();
+        this.getCategoryAndLabel();
       }
     },
   },
@@ -130,6 +136,19 @@ export default {
         });
       }
     },
+
+    //获取正常状态的分类和标签方法
+    async getCategoryAndLabel(){
+        const result = await getCategoryLabel();
+        if(result.data.code == 20000){
+            this.optionData = result.data.data;
+        }else{
+            this.$message({
+                message : "请求数据失败",
+                type : "error"
+            })
+        }
+    }
   },
   components: {
     mavonEditor,
