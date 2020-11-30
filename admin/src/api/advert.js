@@ -49,6 +49,15 @@ export function uploadAdvertData(file){
     })
 }
 
+//删除图片接口
+export function deleteAdvertImg(imageUrl){
+    return request({
+        url: `/article/file/delete`,
+        method: 'delete',
+        params: {'fileUrl': imageUrl}
+    })
+}
+
 //修改广告接口
 export function updateAdvertData(data){
     return request({

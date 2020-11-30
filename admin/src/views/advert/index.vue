@@ -1,5 +1,23 @@
 <template>
   <div class="advert">
+    <!-- 广告搜索 -->
+    <el-form :inline="true" ref="advertForm" :model="advertForm" class="demo-form-inline">
+      <el-form-item label="广告标题:" prop="title">
+        <el-input v-model="advertForm.title" size="mini" ></el-input>
+      </el-form-item>
+      <el-form-item label="状态:" prop="status">
+        <el-select v-model="advertForm.status" size="mini" >
+          <el-option label="禁用" :value="0"></el-option>
+          <el-option label="正常" :value="1"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" size="mini" icon="el-icon-search" @click="searchAdvert">查询</el-button>
+        <el-button  size="mini" icon="el-icon-refresh" @click="reset">重置</el-button>
+         <el-button type="primary" size="mini" icon="el-icon-circle-plus-outline" @click="open">新增</el-button>
+      </el-form-item>
+    </el-form>
+
     <!-- 广告列表   -->
     <el-table :data="advertList" stripe border style="width: 100%">
       <el-table-column align="center" type="index" label="序号" width="60">
@@ -49,8 +67,12 @@
       :page-sizes="[10, 20, 50]"
       :page-size="page.size"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="page.total">
+      :total="page.total"
+    >
     </el-pagination>
+
+    <!-- 弹窗 -->
+    <edit :title="edit.title" :visible="edit.visible" :remoteFunction="close" :id="edit.id"></edit>
   </div>
 </template>
       </el-table-column>
@@ -59,7 +81,8 @@
 </template>
 
 <script>
-import { getAdverList } from "../../api/advert";
+import Edit from "../../components/advert/edit"
+import { getAdverList,deleteAdverListData } from "../../api/advert";
 export default {
   name: "",
   data() {
@@ -71,6 +94,11 @@ export default {
         size: 20,
         total: 0,
       },
+      edit : {
+        title : "",
+        visible : false,
+        id : null
+      }
     };
   },
   created() {
@@ -96,28 +124,67 @@ export default {
     },
 
     //编辑按钮方法
-    handleEdit(id){
-        console.log(id);
+    handleEdit(id) {
+      this.edit.visible = true;
+      this.edit.title = "编辑";
+      this.edit.id= id;
     },
 
     //删除按钮方法
-    handleDelete(id){
-      console.log(id)
+    async handleDelete(id) {
+      const result = await deleteAdverListData(id);
+      if(result.data.code == 20000){
+         this.$message({
+          type : "success",
+          message : "删除成功"
+        })
+        this.getInit();
+      }else{
+        this.$message({
+          type : "error",
+          message : "删除失败"
+        })
+      }
     },
 
     //条数发生变化方法
-    handleSizeChange(val){
-        this.page.size = val;
-        this.getInit();
+    handleSizeChange(val) {
+      this.page.size = val;
+      this.getInit();
     },
 
     //页码发生变化方法
-    handleCurrentChange(val){
-        this.page.current = val;
-        this.getInit();
+    handleCurrentChange(val) {
+      this.page.current = val;
+      this.getInit();
+    },
+
+    //搜索广告方法
+    searchAdvert(){
+      this.getInit();
+    },
+
+    //搜索表单重置方法
+    reset(){
+      this.$refs["advertForm"].resetFields();
+      this.getInit();
+    },
+
+    //打开弹窗
+    open(){
+      this.edit.title = "新增";
+      this.edit.visible = true;
+    },
+
+    //关闭弹窗
+    close(){
+      this.edit.visible = false;
+      this.getInit();
     }
   },
-  components: {},
+  components: {
+    Edit
+  },
 };
 </script>
 
