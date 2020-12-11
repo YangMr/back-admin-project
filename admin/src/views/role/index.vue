@@ -26,7 +26,16 @@
           size="mini"
           @click="open"
           icon="el-icon-circle-plus-outline"
+          v-if="control !== 'hide'"
           >新增</el-button
+        >
+        <el-button
+          type="success"
+          size="mini"
+          @click="setRole"
+          icon="el-icon-circle-plus-outline"
+          v-if="control == 'hide'"
+          >设置角色</el-button
         >
       </el-form-item>
     </el-form>
@@ -55,7 +64,7 @@
         show-overflow-tooltip
       >
       </el-table-column>
-      <el-table-column label="操作" align="center">
+      <el-table-column label="操作" align="center" v-if="control !== 'hide'">
         <template slot-scope="scope">
           <el-button
             type="primary"
@@ -105,6 +114,12 @@ import Edit from "../../components/role/edit"
 import Premission from "../../components/role/premission"
 export default {
   name: "",
+  props : {
+    control : {
+      type : String,
+      default : "",
+    }
+  },
   data() {
     return {
       roleList: [],
@@ -228,6 +243,11 @@ export default {
     close(){
         this.edit.visible = false;
         this.initData();
+    },
+
+    //设置角色方法
+    setRole(){
+      alert("123")
     }
   },
 };
